@@ -1,7 +1,7 @@
 {
-  "name": "boa-troca",
+  "name": "sacolao",
   "version": "1.0.0",
-  "description": "Api Boa Troca",
+  "description": "Api Sacolao",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
@@ -14,11 +14,12 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "ip": "^1.1.8",
     "md5": "^2.3.0",
     "morgan": "^1.10.0",
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.20",
-    "sequelize": "^6.28.0",
+    "sequelize": "^6.31.1",
     "xml-js": "^1.6.11"
   }
 }
