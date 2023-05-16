@@ -16,7 +16,7 @@ const connection = new Sequelize(database, username, password, {
         }
       },
     pool: {
-        max: 20,
+        max: 100,
         min: 0,
         acquire: 600000,
         idle: 20000

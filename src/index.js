@@ -8,7 +8,7 @@ const app = express()
 
 // app.use(morgan('dev'))
 // app.use(bodyParser.urlencoded({extended:false}))
-app.use(express.json())
+app.use(express.json({limit: '200mb'}))
 // app.use(cors())
 
 
