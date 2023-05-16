@@ -12,7 +12,7 @@ module.exports = {
         response.error=[]
         const {user} = req.body
         const [, data] = await connection.query(`
-            SELECT user_id as id ,user_nome as nome,user_email as email FROM tbUser WHERE '${user}' = user_nome OR '${user}' = user_email
+            SELECT id_usuario as id ,ds_usuario as nome,ds_email as email FROM tb_usuario WHERE '${user}' = ds_usuario OR '${user}' = ds_email
         `)
         response.success = data.length > 0
         if(response.success){
@@ -123,40 +123,35 @@ module.exports = {
     //     return res.json(response)
     // },
 
-    // async migrar(req, res){
-    //     const response = {...responseModel}
-    //     response.error=[]
-    //     let jsonFile = require('./clientes.json')
-    //     let queries = []
-    //     jsonFile = JSON.stringify(jsonFile)
-    //     jsonFile = JSON.parse(jsonFile)
-    //     jsonFile.forEach(element => {
-    //         let cpf = element.documento_1
-    //             cpf = cpf.replace('.','')
-    //             cpf = cpf.replace('.','')
-    //             cpf = cpf.replace('-','')
-    //             cpf = cpf.replace('/','')
-    //             let senha = cpf.slice(0,5)
-    //             const senhaEncriptada = md5(senha)
-    //         if(element.e_mail_cadastro!==undefined){
-    //             queries.push(`INSERT INTO tbAssinantes (nome, documentacao_cpf, email, password, status, settings_conteudos, app, can_delete) VALUES ('${element.nome_cliente}','${cpf}','${element.e_mail_cadastro}','${senhaEncriptada}','1','{"planos": ["2226"], "password_parental": null, "livemode_copa_nordeste": false, "livemode_copa_nordeste_exportar": false, "livemode_copa_nordeste_exportacao": null}', '4037', '1')`)
-    //         }else{
-    //             queries.push(`INSERT INTO tbAssinantes (nome, documentacao_cpf, password, status, settings_conteudos, app, can_delete) VALUES ('${element.nome_cliente}','${cpf}','${senhaEncriptada}','1','{"planos": ["2226"], "password_parental": null, "livemode_copa_nordeste": false, "livemode_copa_nordeste_exportar": false, "livemode_copa_nordeste_exportacao": null}', '4037', '1')`)
-    //         }
-    //     });
+    async migrar(req, res){
+        const response = {...responseModel}
+        response.error=[]
+        let jsonFile = require('../../../../arquivos/listaProdutos3.json')
+        let queries = []
+        jsonFile = JSON.stringify(jsonFile)
+        jsonFile = JSON.parse(jsonFile)
+        jsonFile.forEach(element => {
+            let imagem = element.imagem
+            let nome = element.nome.replaceAll("'","")
+            let gtin = element.gtin
+            let categoriaProduto = element.categoriaProduto.replaceAll("'","")
+            let marcaProduto = element.marcaDoProduto.replaceAll("'","")
+            let valorMedio = element.valorMedio
+                queries.push(`INSERT INTO tb_produtos (ds_produto, cd_barras, id_unidade, ds_unidade, ds_categoria, id_valores, url_imagem) VALUES ('${nome}','${gtin}','UN','Unidade','${categoriaProduto}',${valorMedio === null ? null : `'${valorMedio}'`}, '${imagem}')`)
+        });
 
-    //     async function inserir(query){
-    //         try{
-    //             const [, data] = await connection.query(query)
-    //         }catch(err){
-    //             console.log(err)
-    //         }
+        async function inserir(query){
+            try{
+                const [, data] = await connection.query(query)
+            }catch(err){
+                console.log(err)
+            }
             
-    //     }
+        }
 
-    //     queries.forEach(query => {
-    //         inserir(query)
-    //     });
-    // },
+        queries.forEach(query => {
+            inserir(query)
+        });
+    },
 
 }
