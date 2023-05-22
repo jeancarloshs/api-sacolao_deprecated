@@ -3,6 +3,7 @@ const md5 = require("md5");
 const { json } = require("body-parser");
 const responseModel = {
   success: false,
+  found: [],
   data: [],
   error: [],
 };
@@ -44,6 +45,7 @@ module.exports = {
     const response = { ...responseModel };
     const { jsonList } = req.body;
     response.error = [];
+    response.data = [];
     let queries = [];
     jsonList.forEach((produto) => {
       let imagem = produto?.imagem;
@@ -63,17 +65,18 @@ module.exports = {
       try {
         const [, data] = await connection.query(query);
         response.success = true
-        response.data.push("Inserido com sucesso!")
       } catch (err) {
         response.success = false
         response.error.push("Falha ao tentar inserir produto")
         console.log(err);
       }
     }
-
+    
     queries.forEach((query) => {
       inserir(query);
+      response.data.push("Inserido com sucesso!")
     });
+    response.found = queries.length
     return res.json(response);
   },
 };
