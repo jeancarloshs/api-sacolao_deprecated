@@ -9,7 +9,7 @@ const responseModel = {
 module.exports = {
   async produtosCOD(req, res) {
     const response = { ...responseModel };
-    const codigo = req.param("codigo");
+    const codigo = req.params.codigo;
     response.error = [];
     const [, data] = await connection.query(`
             SELECT id_produto as id, ds_produto as produto, cd_barras as codigo, url_imagem as imagem FROM tb_produtos where cd_barras = ${codigo}
