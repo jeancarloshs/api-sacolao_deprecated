@@ -1,6 +1,7 @@
 const connection = require("../database/connection")
 const md5 = require('md5');
 const { json } = require("body-parser");
+const { response } = require("express");
 const responseModel = {
     success:false,
     data:[],
@@ -48,6 +49,26 @@ module.exports = {
             return res.json(response)
         // }, 1000);
        
+    },
+
+    async createUser(req, res) {
+        const response = { ...responseModel };
+        response.data = [];
+        response.error = [];
+        const { ds_usuario, id_uf, ds_email, ds_senha} = req.body;
+        const passwordEncrypted = md5(ds_senha);
+
+        if (ds_usuario && id_uf && ds_email && ds_senha) {
+            const [, data] = await connection.query(`
+            INSERT INTO tb_usuario (ds_usuario, id_uf, ds_email, ds_senha, ds_status, ds_permissao) VALUES ('${ds_usuario}', '${id_uf}', '${ds_email}', '${passwordEncrypted}', '1', '0');
+        `)
+        response.success = true
+        response.data.push(`${ds_usuario} - cadastrado com sucesso`)
+        } else {
+            response.error.push("Preencha todos os campos")
+        }
+
+        return res.json(response);
     },
 
     // async convert(req, res){

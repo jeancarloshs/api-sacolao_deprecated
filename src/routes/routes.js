@@ -6,6 +6,7 @@ const ListaController = require('../controllers/ListaController')
 
 //USER
 router.get('/user/buscar', UserController.user)
+router.post('/user/createuser', UserController.createUser)
 
 //LOGIN
 router.post('/login', UserController.login)
