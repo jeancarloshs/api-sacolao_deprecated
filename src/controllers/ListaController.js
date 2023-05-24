@@ -30,4 +30,29 @@ module.exports = {
 
     return res.json(response);
   },
+
+  async getUserLists(req, res) {
+    const response = { ...responseModel };
+    const idUser = req.params.id;
+    response.data = [];
+    response.error = [];
+    response.found = [];
+    try {
+      const [, data] = await connection.query(`
+        SELECT * FROM tb_listas WHERE id_usuario = ${idUser}
+      `);
+      response.success = data.length > 0;
+      if (response.success) {
+        response.success = true;
+        response.found = data.length;
+        response.data = data;
+      } else {
+        response.error.push("Nenhuma lista foi encontrada");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    return res.json(response);
+  },
 };
