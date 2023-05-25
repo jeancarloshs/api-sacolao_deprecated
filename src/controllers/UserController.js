@@ -61,24 +61,29 @@ module.exports = {
     response.error = [];
     const { ds_usuario, id_uf, ds_email, ds_senha } = req.body;
 
-    // if (ds_senha === null) {
-    //     response.error.push("Preencha todos os campos");
-    // }
+    const [, data] = await connection.query(`
+        SELECT * FROM tb_usuario WHERE ds_email = '${ds_email}'
+    `);
+    response.success = data.length > 0;
 
-    try {
-      if (ds_usuario && id_uf && ds_email && ds_senha) {
-        const passwordEncrypted = md5(ds_senha);
-        const [, data] = await connection.query(`
-            INSERT INTO tb_usuario (ds_usuario, id_uf, ds_email, ds_senha, ds_status, ds_permissao) VALUES ('${ds_usuario}', '${id_uf}', '${ds_email}', '${passwordEncrypted}', '1', '0');
-        `);
-        // response.success = data.length > 0;
-        response.success = true;
-        response.data.push(`${ds_usuario} - cadastrado com sucesso`);
-      } else {
-        response.error.push("Preencha todos os campos");
+    if (response.success) {
+      response.error.push(`Email ${ds_email} já existe`);
+    } else {
+      try {
+        if (ds_usuario && id_uf && ds_email && ds_senha) {
+          const passwordEncrypted = md5(ds_senha);
+          const [, data] = await connection.query(`
+                INSERT INTO tb_usuario (ds_usuario, id_uf, ds_email, ds_senha, ds_status, ds_permissao) VALUES ('${ds_usuario}', '${id_uf}', '${ds_email}', '${passwordEncrypted}', '1', '0');
+            `);
+          // response.success = data.length > 0;
+          response.success = true;
+          response.data.push(`${ds_usuario} - cadastrado com sucesso`);
+        } else {
+          response.error.push("Preencha todos os campos");
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
 
     return res.json(response);
