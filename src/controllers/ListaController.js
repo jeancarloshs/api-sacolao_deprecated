@@ -1,7 +1,7 @@
-const { response } = require("express");
 const connection = require("../database/connection");
 const { json } = require("body-parser");
 const constants = require("../constants/constants");
+const { query } = require("express");
 const responseModel = {
   success: false,
   found: 0,
@@ -35,26 +35,35 @@ module.exports = {
 
   async getUserLists(req, res) {
     const response = { ...responseModel };
-    const idUser = req.params.id;
+    let idUser = req.params.id;
     response.data = [];
     response.error = [];
-    response.found = [];
-    try {
-      const [, data] = await connection.query(`
-        SELECT * FROM tb_listas WHERE id_usuario = ${idUser}
-      `);
-      response.success = data.length > 0;
-      if (response.success) {
-        response.success = true;
-        response.found = data.length;
-        response.data = data;
-      } else {
-        response.error.push("Nenhuma lista foi encontrada");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    let query = "";
 
+    // query = `SELECT EXISTS(SELECT 1 FROM tb_usuario WHERE id_usuario = ${idUser}) AS exists_value;`
+    query = `SELECT id_usuario FROM tb_usuario WHERE id_usuario = ${idUser}`
+    const [, outData] = await connection.query(query)
+
+    if(outData.length < 1) {
+      response.error.push(constants.userNotFound)
+    } else {
+      try {
+        const [, data] = await connection.query(`
+          SELECT * FROM tb_listas WHERE id_usuario = ${idUser}
+        `);
+        response.success = data.length > 0;
+        if (response.success) {
+          response.success = true;
+          response.found = data.length;
+          response.data = data;
+        } else {
+          response.error.push("Nenhuma lista foi encontrada");
+        } 
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  
     return res.json(response);
   },
 
@@ -63,7 +72,6 @@ module.exports = {
     const idList = req.params.id;
     response.data = [];
     response.error = [];
-    response.found = [];
 
     try {
       const [, data] = await connection.query(`
