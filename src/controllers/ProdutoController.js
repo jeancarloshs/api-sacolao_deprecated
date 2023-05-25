@@ -19,7 +19,7 @@ module.exports = {
       response.found = data.length;
       response.data = data;
     } else {
-      response.error.push("Nenhum produto encontrado!");
+      response.error.push(constants.noProductsFound);
     }
 
     return res.json(response);
@@ -36,7 +36,7 @@ module.exports = {
       response.found = data.length;
       response.data = data;
     } else {
-      response.error.push("Nenhum produto encontrado!");
+      response.error.push(constants.noProductsFound);
     }
 
     return res.json(response);
@@ -52,7 +52,7 @@ module.exports = {
       response.found = data.length;
       response.data = data;
     } else {
-      response.error.push("Nenhum produto encontrado!");
+      response.error.push(constants.noProductsFound);
     }
 
     return res.json(response);

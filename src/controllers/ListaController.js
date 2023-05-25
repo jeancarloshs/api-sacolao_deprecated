@@ -1,5 +1,7 @@
+const { response } = require("express");
 const connection = require("../database/connection");
 const { json } = require("body-parser");
+const constants = require("../constants/constants");
 const responseModel = {
   success: false,
   found: 0,
@@ -25,7 +27,7 @@ module.exports = {
       response.data.push(`Lista cadastrada com sucesso`);
       response.found = data.length;
     } else {
-      response.error.push(`Preencha todos os campos`);
+      response.error.push(constants.requiredfields);
     }
 
     return res.json(response);
@@ -87,4 +89,12 @@ module.exports = {
 
     return res.json(response);
   },
+
+  // async addProducts(req, res) {
+  //   const response = { ...responseModel }
+  //   response.data = []
+  //   response.error = []
+  //   response.found = []
+  //   const { } = req.body;
+  // }
 };
