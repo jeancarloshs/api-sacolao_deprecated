@@ -25,7 +25,7 @@ module.exports = {
       response.data.push(`Lista cadastrada com sucesso`);
       response.found = data.length;
     } else {
-      response.error.push("id_user é obrigatorio");
+      response.error.push(`Preencha todos os campos`);
     }
 
     return res.json(response);
@@ -48,6 +48,33 @@ module.exports = {
         response.data = data;
       } else {
         response.error.push("Nenhuma lista foi encontrada");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    return res.json(response);
+  },
+
+  async getListProducts(req, res) {
+    const response = { ...responseModel };
+    const idUser = req.params.idUser;
+    const idList = req.params.IdList;
+    response.data = [];
+    response.error = [];
+    response.found = [];
+
+    try {
+      const [, data] = await connection.query(`
+      SELECT * FROM tb_listas WHERE ${idUser} = ${idUser}
+      `);
+      // response.success = data.length > 0;
+      if (response.success) {
+        response.success = true;
+        response.found = data.length;
+        response.data = data;
+      } else {
+        response.error.push("Nenhum item na lista");
       }
     } catch (error) {
       console.log(error);

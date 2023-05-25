@@ -19,6 +19,7 @@ router.delete('/manage/deletarduplicado', ProdutoController.removerDuplicado)
 
 //LISTA
 router.get('/listas/getuserlists/:id', ListaController.getUserLists)
+router.get('/listas/getlistproducts/:idUser/:idList', ListaController.getListProducts)
 router.post('/listas/criar', ListaController.criaLista)
 
 //MIGRATION
