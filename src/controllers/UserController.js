@@ -3,6 +3,8 @@ const md5 = require("md5");
 const { json } = require("body-parser");
 const { response } = require("express");
 const constants = require("../constants/constants");
+const jwt = require("jsonwebtoken");
+const SECRET = process.env.SECRET;
 
 const responseModel = {
   success: false,
@@ -21,9 +23,7 @@ module.exports = {
     if (response.success) {
       response.data = data;
     } else {
-      user !== undefined
-        ? response.error.push(constants.userNotFound)
-        : "";
+      user !== undefined ? response.error.push(constants.userNotFound) : "";
       user === undefined ? response.error.push("user: é obrigatório") : "";
     }
 
@@ -38,11 +38,16 @@ module.exports = {
     const passwordEncrypted = password !== undefined ? md5(password) : "";
 
     const [, data] = await connection.query(`
-            SELECT user_id as id, user_email as email, user_nome as nome, user_tipo, user_ativo FROM tbUser WHERE '${login}' = user_email AND '${passwordEncrypted}' = user_senha
+            SELECT id_usuario as id, ds_email as email, ds_usuario as nome, ds_status
+            FROM tb_usuario
+            WHERE ds_email = "${login}"
+            AND ds_senha = "${passwordEncrypted}"
         `);
     response.success = data.length > 0;
     if (response.success) {
+      const token = jwt.sign({userId: 1 }, SECRET, { expiresIn: 2592000 })
       response.data = data;
+      return res.json({ auth: true, token });
     } else {
       login !== undefined && password !== undefined
         ? response.error.push("Login ou senha incorretos")
