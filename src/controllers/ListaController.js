@@ -58,18 +58,23 @@ module.exports = {
 
   async getListProducts(req, res) {
     const response = { ...responseModel };
-    const idUser = req.params.idUser;
-    const idList = req.params.IdList;
+    const idList = req.params.id;
     response.data = [];
     response.error = [];
     response.found = [];
 
     try {
       const [, data] = await connection.query(`
-      SELECT * FROM tb_listas WHERE ${idUser} = ${idUser}
+      SELECT * FROM tb_produtos_by_list WHERE id_lista = ${idList}
       `);
-      // response.success = data.length > 0;
+      response.success = data.length > 0;
       if (response.success) {
+        const query = `
+        SELECT tb_produtos.ds_produto, tb_produtos.cd_barras, tb_produtos.url_imagem, tb_produtos_by_list.id_pblist, tb_produtos_by_list.id_valor, tb_produtos_by_list.id_qtd
+        FROM tb_produtos JOIN tb_produtos_by_list
+        WHERE tb_produtos.id_produto = tb_produtos_by_list.id_produto
+        `
+        const [, data] = await connection.query(query);
         response.success = true;
         response.found = data.length;
         response.data = data;
