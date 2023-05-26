@@ -1,7 +1,5 @@
 const connection = require("../database/connection");
-const { json } = require("body-parser");
 const constants = require("../constants/constants");
-const { query } = require("express");
 const responseModel = {
   success: false,
   found: 0,
@@ -40,7 +38,6 @@ module.exports = {
     response.error = [];
     let query = "";
 
-    // query = `SELECT EXISTS(SELECT 1 FROM tb_usuario WHERE id_usuario = ${idUser}) AS exists_value;`
     query = `SELECT id_usuario FROM tb_usuario WHERE id_usuario = ${idUser}`
     const [, outData] = await connection.query(query)
 

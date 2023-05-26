@@ -4,6 +4,7 @@ module.exports = {
     userError: 'Usuário não pode ser criado',
     userNotFound: 'Usuário não encontrado',
     userAlreadyExist: 'Usuário já existe na nossa base de dados',
+    userLoginError: 'Login ou senha incorretos',
 
     // Campos obrigatorios
     requiredfields: 'Preencha todos os campos',

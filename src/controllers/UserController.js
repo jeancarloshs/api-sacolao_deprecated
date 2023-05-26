@@ -1,9 +1,8 @@
 const connection = require("../database/connection");
 const md5 = require("md5");
-const { json } = require("body-parser");
-const { response } = require("express");
 const constants = require("../constants/constants");
 const jwt = require("jsonwebtoken");
+const { log } = require("console");
 const SECRET = process.env.SECRET;
 
 const responseModel = {
@@ -37,24 +36,30 @@ module.exports = {
     console.log(req.body);
     const passwordEncrypted = password !== undefined ? md5(password) : "";
 
-    const [, data] = await connection.query(`
-            SELECT id_usuario as id, ds_email as email, ds_usuario as nome, ds_status
-            FROM tb_usuario
-            WHERE ds_email = "${login}"
-            AND ds_senha = "${passwordEncrypted}"
-        `);
-    response.success = data.length > 0;
-    if (response.success) {
-      const token = jwt.sign({userId: 1 }, SECRET, { expiresIn: 2592000 })
-      response.data = data;
-      return res.json({ auth: true, token });
-    } else {
-      login !== undefined && password !== undefined
-        ? response.error.push("Login ou senha incorretos")
-        : "";
-      login === undefined || password === undefined
-        ? response.error.push("login: e password: é obrigatório")
-        : "";
+    try {
+      const [, data] = await connection.query(`
+      SELECT id_usuario as id, ds_email as email, ds_usuario as nome, ds_status
+      FROM tb_usuario
+      WHERE ds_email = "${login}"
+      AND ds_senha = "${passwordEncrypted}"
+  `);
+      response.success = data.length > 0;
+      if (response.success) {
+        const token = jwt.sign({ userId: login }, SECRET, { expiresIn: 2592000 });
+        response.data = data;
+        return res.json({ auth: true, token });
+      } else {
+        // login !== undefined && password !== undefined
+        //   ? response.error.push("Login ou senha incorretos")
+        //   : "";
+        // login === undefined || password === undefined
+        //   ? response.error.push("login: e password: é obrigatório")
+        //   : "";
+        res.status(401);
+        response.error.push(constants.userLoginError);
+      }
+    } catch (error) {
+      console.log(error)
     }
 
     // setTimeout(() => {
