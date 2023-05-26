@@ -25,5 +25,12 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
+  },
+  "vercel": {
+    "build": {
+      "env": {
+        "VERCEL_NODE_VERSION": "14.17.0"
+      }
+    }
   }
 }
