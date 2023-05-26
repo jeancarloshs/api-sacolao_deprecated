@@ -1,16 +1,16 @@
+const constants = require("../constants/constants");
 const connection = require("../database/connection");
 const { json } = require("body-parser");
 const responseModel = {
   success: false,
   found: 0,
   data: [],
-  error: [],
+  error: "",
 };
 module.exports = {
   async produtosCOD(req, res) {
     const response = { ...responseModel };
-    const codigo = req.param("codigo");
-    response.error = [];
+    const codigo = req.params.codigo;
     const [, data] = await connection.query(`
             SELECT id_produto as id, ds_produto as produto, cd_barras as codigo, url_imagem as imagem FROM tb_produtos where cd_barras = ${codigo}
         `);
@@ -19,7 +19,7 @@ module.exports = {
       response.found = data.length;
       response.data = data;
     } else {
-      response.error.push("Nenhum produto encontrado!");
+      response.error = constants['404'].noProductsFound;
     }
 
     return res.json(response);
@@ -27,7 +27,6 @@ module.exports = {
   async produtosDS(req, res) {
     const response = { ...responseModel };
     const descricao = req.param("descricao");
-    response.error = [];
     const [, data] = await connection.query(`
             SELECT id_produto as id, ds_produto as produto, cd_barras as codigo, url_imagem as imagem FROM tb_produtos where ds_produto like '%${descricao}%'
         `);
@@ -36,14 +35,13 @@ module.exports = {
       response.found = data.length;
       response.data = data;
     } else {
-      response.error.push("Nenhum produto encontrado!");
+      response.error = constants['404'].noProductsFound;
     }
 
     return res.json(response);
   },
   async todos(req, res) {
     const response = { ...responseModel };
-    response.error = [];
     const [, data] = await connection.query(`
             SELECT COUNT(*) as Prod_Total FROM tb_produtos
         `);
@@ -52,14 +50,13 @@ module.exports = {
       response.found = data.length;
       response.data = data;
     } else {
-      response.error.push("Nenhum produto encontrado!");
+      response.error = constants['401'].noProductsFound;
     }
 
     return res.json(response);
   },
   async removerDuplicado(req, res) {
     const response = { ...responseModel };
-    response.error = [];
     response.data = [];
     const [, data] = await connection.query(`
         SELECT cd_barras AS codigo , ds_produto AS produto FROM tb_produtos GROUP BY cd_barras, ds_produto HAVING COUNT(cd_barras)>1 AND COUNT(ds_produto)>1
@@ -75,12 +72,12 @@ module.exports = {
                         HAVING id_produto > MIN(min_id)
                       )`;
         const [, data] = await connection.query(query);
-        response.data.push("Duplicados foram deletados!");
+        response.data = constants['200'].deletedDuplicates;
       } catch (err) {
         console.log(err);
       }
     } else {
-      response.error.push("Nenhum produto duplicado!");
+      response.error = constants['404'].noProductsFound;
     }
 
     return res.json(response);
