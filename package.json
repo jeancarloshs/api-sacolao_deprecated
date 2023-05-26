@@ -2,7 +2,13 @@
   "name": "sacolao",
   "version": "1.0.0",
   "description": "Api Sacolao",
-  "main": "index.js",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.1",
     "cors": "^2.8.5",
@@ -19,12 +25,6 @@
   "devDependencies": {
     "nodemon": "^2.0.22"
   },
-  "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
-  },
-  "author": "",
-  "license": "ISC",
   "vercel": {
     "build": {
       "env": {
