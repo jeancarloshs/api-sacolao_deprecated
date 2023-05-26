@@ -5,7 +5,7 @@ const responseModel = {
   success: false,
   found: [],
   data: [],
-  error: [],
+  error: "",
 };
 module.exports = {
   async migrar(req, res) {
@@ -67,7 +67,7 @@ module.exports = {
         response.success = true
       } catch (err) {
         response.success = false
-        response.error.push("Falha ao tentar inserir produto")
+        response.error = "Falha ao tentar inserir produto";
         console.log(err);
       }
     }

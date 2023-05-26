@@ -8,12 +8,11 @@ const SECRET = process.env.SECRET;
 const responseModel = {
   success: false,
   data: [],
-  error: [],
+  error: "",
 };
 module.exports = {
   async user(req, res) {
     const response = { ...responseModel };
-    response.error = [];
     const { user } = req.body;
     const [, data] = await connection.query(`
             SELECT id_usuario as id ,ds_usuario as nome,ds_email as email FROM tb_usuario WHERE '${user}' = ds_usuario OR '${user}' = ds_email
@@ -22,8 +21,8 @@ module.exports = {
     if (response.success) {
       response.data = data;
     } else {
-      user !== undefined ? response.error.push(constants.userNotFound) : "";
-      user === undefined ? response.error.push("user: é obrigatório") : "";
+      user !== undefined ? response.error = constants['404'].userNotFound : "";
+      user === undefined ? response.error = constants['422'].userNotDefined : "";
     }
 
     return res.json(response);
@@ -31,9 +30,7 @@ module.exports = {
 
   async login(req, res) {
     const response = { ...responseModel };
-    response.error = [];
     const { login, password } = req.body;
-    console.log(req.body);
     const passwordEncrypted = password !== undefined ? md5(password) : "";
 
     try {
@@ -56,7 +53,7 @@ module.exports = {
         //   ? response.error.push("login: e password: é obrigatório")
         //   : "";
         res.status(401);
-        response.error.push(constants.userLoginError);
+        response.error = constants['401'].userLoginError;
       }
     } catch (error) {
       console.log(error)
@@ -70,7 +67,6 @@ module.exports = {
   async createUser(req, res) {
     const response = { ...responseModel };
     response.data = [];
-    response.error = [];
     const { ds_usuario, id_uf, ds_email, ds_senha } = req.body;
 
     const [, data] = await connection.query(`
@@ -79,7 +75,7 @@ module.exports = {
     response.success = data.length > 0;
 
     if (response.success) {
-      response.error.push(constants.userAlreadyExist);
+      response.error = constants['409'].userAlreadyExist;
     } else {
       try {
         if (ds_usuario && id_uf && ds_email && ds_senha) {
@@ -89,9 +85,9 @@ module.exports = {
             `);
           // response.success = data.length > 0;
           response.success = true;
-          response.data.push(constants.userSuccess);
+          response.data = constants['201'].userSuccess;
         } else {
-          response.error.push(constants.requiredfields);
+          response.error = constants['422'].requiredfields;
         }
       } catch (error) {
         console.log(error);

@@ -4,14 +4,13 @@ const responseModel = {
   success: false,
   found: 0,
   data: [],
-  error: [],
+  error: "",
 };
 
 module.exports = {
   async criaLista(req, res) {
     const response = { ...responseModel };
     response.data = [];
-    response.error = [];
     const { id_user, ds_lista } = req.body;
     let query = "";
 
@@ -25,7 +24,7 @@ module.exports = {
       response.data.push(`Lista cadastrada com sucesso`);
       response.found = data.length;
     } else {
-      response.error.push(constants.requiredfields);
+      response.error = constants['422'].requiredfields;
     }
 
     return res.json(response);
@@ -35,14 +34,13 @@ module.exports = {
     const response = { ...responseModel };
     let idUser = req.params.id;
     response.data = [];
-    response.error = [];
     let query = "";
 
     query = `SELECT id_usuario FROM tb_usuario WHERE id_usuario = ${idUser}`
     const [, outData] = await connection.query(query)
 
     if(outData.length < 1) {
-      response.error.push(constants.userNotFound)
+      response.error = constants['404'].userNotFound;
     } else {
       try {
         const [, data] = await connection.query(`
@@ -54,7 +52,7 @@ module.exports = {
           response.found = data.length;
           response.data = data;
         } else {
-          response.error.push("Nenhuma lista foi encontrada");
+          response.error.push(constants["404"].noListsFound);
         } 
       } catch (error) {
         console.log(error);
@@ -68,7 +66,6 @@ module.exports = {
     const response = { ...responseModel };
     const idList = req.params.id;
     response.data = [];
-    response.error = [];
 
     try {
       const [, data] = await connection.query(`
@@ -86,7 +83,7 @@ module.exports = {
         response.found = data.length;
         response.data = data;
       } else {
-        response.error.push("Nenhum item na lista");
+        response.error = "Nenhum item na lista";
       }
     } catch (error) {
       console.log(error);

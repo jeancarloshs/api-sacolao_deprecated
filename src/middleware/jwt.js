@@ -5,7 +5,7 @@ const SECRET = process.env.SECRET;
 
 const responseModel = {
   success: false,
-  error: [],
+  error: "",
 };
 
 module.exports = function verifyJWT(req, res, next) {
@@ -14,15 +14,15 @@ module.exports = function verifyJWT(req, res, next) {
 
   if (!authorizationHeader) {
     return res
-      .status(403)
-      .json({ error: constants.tokenItsNotValid });
+      .status(constants['403'].status)
+      .json({ error: constants['403'].tokenNotFound });
   }
 
   const token = req.headers.authorization.split(" ")[1];
 
   jwt.verify(token, SECRET, (error, decode) => {
     if (error) {
-      response.error.push("Token inválido");
+      response.error = constants['401'].tokenItsNotValid;
       return res.status(401).json(response);
     }
     req.userId = decode.userId;
