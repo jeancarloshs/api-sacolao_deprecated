@@ -9,7 +9,7 @@ const verifyJWT = require('../middleware/jwt')
 
 //USER
 router.get('/user/buscar', verifyJWT, UserController.user)
-router.post('/user/createuser', verifyJWT, UserController.createUser)
+router.post('/user/createuser', UserController.createUser)
 
 //LOGIN
 router.post('/login', UserController.login)
