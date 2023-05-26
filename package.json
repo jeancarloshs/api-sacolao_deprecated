@@ -4,6 +4,7 @@
   "description": "Api Sacolao",
   "main": "index.js",
   "scripts": {
+    "build-vercer": "npm install -y",
     "dev": "nodemon src/index.js",
     "start": "node src/index.js"
   },

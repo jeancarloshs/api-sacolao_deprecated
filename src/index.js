@@ -12,7 +12,7 @@ const port = process.env.PORT || 3030
 const ip = require('ip').address()
 const protocol = process.env.PROTOCOL
 
-const routes = require('./src/routes/routes')
+const routes = require('./routes/routes')
 app.use(routes)
 
 app.listen(port,()=>{
