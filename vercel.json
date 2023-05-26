@@ -1,5 +1,7 @@
 {
+    "name": "api-meusacolao",
     "version": 2,
+    "public": true,
     "builds": [
         {
             "src": "src/index.js",
@@ -8,7 +10,7 @@
     ],
     "routes": [
         {
-            "src": "(.*)",
+            "src": "/(.*)",
             "dest": "src/index.js"
         }
     ]
