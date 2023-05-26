@@ -10,7 +10,16 @@ const responseModel = {
 
 module.exports = function verifyJWT(req, res, next) {
   const response = { ...responseModel };
-  const token = req.headers["authorization"].split(" ")[1];
+  const authorizationHeader = req.headers.authorization;
+
+  if (!authorizationHeader) {
+    return res
+      .status(403)
+      .json({ error: constants.tokenItsNotValid });
+  }
+
+  const token = req.headers.authorization.split(" ")[1];
+
   jwt.verify(token, SECRET, (error, decode) => {
     if (error) {
       response.error.push("Token inválido");
