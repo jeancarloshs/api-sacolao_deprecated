@@ -1,10 +1,4 @@
-const express = require('express');
-const app = express();
-
-// Configurações do Sequelize e do banco de dados
-const { Sequelize } = require('sequelize');
-
-// const Sequelize = require('sequelize')
+const Sequelize = require('sequelize')
 const fs = require('fs')
 
 const database = process.env.DATABASE
@@ -17,7 +11,7 @@ const dialect = process.env.DIALECT
 const connection = new Sequelize(database, username, password, {
     host,
     dialect,
-    dialectModule: 'mysql2',
+    dialectModule: require('mysql2'),
     dialectOptions: {
         options: {
           requestTimeout: 600000
