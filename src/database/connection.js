@@ -15,9 +15,9 @@ const dialect = process.env.DIALECT
 
 const connection = new Sequelize(database, username, password, {
     host,
-    dialect:'mysql',
+    dialect,
+    dialectModule: require('mysql2'),
     dialectOptions: {
-      dialectModule: 'mysql2',
         options: {
           requestTimeout: 600000
         }
