@@ -7,6 +7,10 @@ const verifyJWT = require('../middleware/jwt')
 
 // router.use(verifyJWT)
 
+router.get('/', (req, res) => {
+    res.send('server iniciado')
+})
+
 //USER
 router.get('/user/buscar', verifyJWT, UserController.user)
 router.post('/user/createuser', UserController.createUser)

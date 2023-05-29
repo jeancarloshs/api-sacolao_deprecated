@@ -4,9 +4,9 @@
   "description": "Api Sacolao",
   "main": "index.js",
   "scripts": {
+    "build-vercer": "npm install -y",
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js",
-    "vercel-build": "npm install"
+    "start": "node src/index.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +15,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "fs": "^0.0.1-security",
     "ip": "^1.1.8",
     "jsonwebtoken": "^9.0.0",
     "md5": "^2.3.0",
@@ -25,5 +26,12 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
+  },
+  "vercel": {
+    "build": {
+      "env": {
+        "VERCEL_NODE_VERSION": "14.17.0"
+      }
+    }
   }
 }
