@@ -40,7 +40,7 @@ module.exports = {
       WHERE ds_email = "${login}"
       AND ds_senha = "${passwordEncrypted}"
   `);
-      response.success = data.length > 0;
+      response.success = data && data.length > 0;
       if (response.success) {
         const token = jwt.sign({ userId: login }, SECRET, { expiresIn: 2592000 });
         response.data = data;
