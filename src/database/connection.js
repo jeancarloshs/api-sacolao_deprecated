@@ -8,15 +8,10 @@ const host = process.env.HOST
 const dialect = process.env.DIALECT
 // const certificad = fs.readFileSync("{./DigiCertGlobalRootCA.crt.pem}")
 
-// const hostname = process.env.hostname;
-// const usernameAzure = process.env.usernameAzure;
-// const passwordAzure = process.env.passwordAzure;
-// const databaseAzure = process.env.databaseAzure;
-
 const connection = new Sequelize(database, username, password, {
     host,
-    dialect:'mysql',
-    dialectModule: 'mysql2',
+    dialect,
+    dialectModule: require('mysql2'),
     dialectOptions: {
         options: {
           requestTimeout: 600000
@@ -33,5 +28,3 @@ const connection = new Sequelize(database, username, password, {
 })
 
 module.exports = connection
-
-// var conn=mysql.createConnection({host: hostname, user: usernameAzure, password: passwordAzure, database: databaseAzure, port:3306, ssl:{ca:fs.readFileSync("{ca-cert filename}")}});
