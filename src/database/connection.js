@@ -8,10 +8,6 @@ const host = process.env.HOST
 const dialect = process.env.DIALECT
 // const certificad = fs.readFileSync("{./DigiCertGlobalRootCA.crt.pem}")
 
-if (options.dialect === 'mysql') {
-  options.dialectModule = mysql2;
-}
-
 const connection = new Sequelize(database, username, password, {
     host,
     dialect,
