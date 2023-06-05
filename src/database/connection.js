@@ -11,7 +11,7 @@ const certificad = fs.readFileSync(__dirname + '/DigiCertGlobalRootCA.crt.pem')
 const connection = new Sequelize(database, username, password, {
   host,
   dialect,
-  dialectModule: require("mysql2"),
+  dialectModule: require("mysql2/typings/mysql"),
   dialectOptions: {
     options: {
       requestTimeout: 600000,
