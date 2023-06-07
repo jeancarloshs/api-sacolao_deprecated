@@ -14,7 +14,7 @@ const connection = new Sequelize(database, username, password, {
   dialectModule: require("mysql2"),
   dialectOptions: {
     options: {
-      requestTimeout: 600000000,
+      requestTimeout: 600000,
     },
     ssl: {
       ca: certificad
@@ -22,8 +22,8 @@ const connection = new Sequelize(database, username, password, {
   },
   pool: {
     min: 0,
-    acquire: 600000000,
-    idle: 20000000,
+    acquire: 600000,
+    idle: 20000,
   },
 });
 
