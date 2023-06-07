@@ -1,17 +1,17 @@
 {
-    "name": "api-meusacolao",
-    "version": 2,
-    "public": true,
-    "builds": [
-        {
-            "src": "src/**/*.js",
-            "use": "@vercel/node"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "src/index.js"
-        }
-    ]
+  "name": "api-meusacolao",
+  "version": 2,
+  "public": true,
+  "builds": [
+      {
+          "src": "src/*.js",
+          "use": "@vercel/node"
+      }
+  ],
+  "routes": [
+      {
+          "src": "/(.*)",
+          "dest": "src/index.js"
+      }
+  ]
 }
