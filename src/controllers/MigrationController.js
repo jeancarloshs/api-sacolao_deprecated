@@ -43,11 +43,12 @@ module.exports = {
   },
   async inserirJson(req, res) {
     const response = { ...responseModel };
-    const { jsonList } = req.body;
+    const { file } = req.body;
+    const jsonFile = require(`../../arquivos/${file}.json`);
     response.error = [];
     response.data = [];
     let queries = [];
-    jsonList.forEach((produto) => {
+    jsonFile?.forEach((produto) => {
       let imagem = produto?.imagem;
       let nome = produto?.nome?.replaceAll("'", "");
       let gtin = produto?.gtin;
