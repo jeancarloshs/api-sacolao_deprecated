@@ -49,6 +49,7 @@ module.exports = {
     response.data = [];
     let queries = [];
     jsonFile?.forEach((produto) => {
+      // console.log('produtos', produto)
       let imagem = produto?.imagem;
       let nome = produto?.nome?.replaceAll("'", "");
       let gtin = produto?.gtin;
