@@ -5,7 +5,7 @@ const express = require('express')
 require('dotenv').config()
 
 const app = express()
-app.use(express.json({limit: '200mb'}))
+app.use(express.json({limit: 200000000}))
 
 
 const port = process.env.PORT || 3030
