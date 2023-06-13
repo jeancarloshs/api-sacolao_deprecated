@@ -44,9 +44,8 @@ module.exports = {
       if (response.success) {
         const token = jwt.sign({ userId: login }, SECRET, { expiresIn: 2592000 });
         const objUser = {
-          data:{
             data
-          },
+          ,
           auth: true,
           token:token
         }
