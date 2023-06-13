@@ -29,12 +29,13 @@ module.exports = {
           permission:data[0].permissao
         }
       }
+      return res.json(objAuth);
     } else {
       user !== undefined ? response.error = constants['404'].userNotFound : "";
       user === undefined ? response.error = constants['422'].userNotDefined : "";
+      return res.json(response);
     }
 
-    return res.json(objAuth);
   },
 
   async login(req, res) {
