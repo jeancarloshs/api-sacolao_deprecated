@@ -43,8 +43,14 @@ module.exports = {
       response.success = data.length > 0;
       if (response.success) {
         const token = jwt.sign({ userId: login }, SECRET, { expiresIn: 2592000 });
-        response.data = data;
-        response.data.push({ auth: true, token });
+        const objUser = {
+          data:{
+            data
+          },
+          auth: true,
+          token:token
+        }
+        response.data = objUser;
         return res.json(response);
       } else {
         // login !== undefined && password !== undefined
