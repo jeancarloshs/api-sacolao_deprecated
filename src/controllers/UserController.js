@@ -44,7 +44,8 @@ module.exports = {
       if (response.success) {
         const token = jwt.sign({ userId: login }, SECRET, { expiresIn: 2592000 });
         response.data = data;
-        return res.json({ auth: true, token });
+        response.data.push({ auth: true, token });
+        return res.json(response);
       } else {
         // login !== undefined && password !== undefined
         //   ? response.error.push("Login ou senha incorretos")
