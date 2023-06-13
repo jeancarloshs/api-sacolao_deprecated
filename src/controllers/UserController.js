@@ -35,7 +35,7 @@ module.exports = {
 
     try {
       const [, data] = await connection.query(`
-      SELECT id_usuario as id, ds_email as email, ds_usuario as nome, ds_status
+      SELECT id_usuario as id, ds_email as email, ds_usuario as nome, ds_status as status, ds_permissao as permissao
       FROM tb_usuario
       WHERE ds_email = "${login}"
       AND ds_senha = "${passwordEncrypted}"
@@ -43,14 +43,19 @@ module.exports = {
       response.success = data.length > 0;
       if (response.success) {
         const token = jwt.sign({ userId: login }, SECRET, { expiresIn: 2592000 });
-        const objUser = {
-            data
+        const objAuth = {
+            user:{
+              id:data.id,
+              name:data.nome,
+              email:data.email,
+              status:data.status,
+              permission:data.permissao
+            }
           ,
           auth: true,
           token:token
         }
-        response.data = objUser;
-        return res.json(response);
+        return res.json(objAuth);
       } else {
         // login !== undefined && password !== undefined
         //   ? response.error.push("Login ou senha incorretos")
