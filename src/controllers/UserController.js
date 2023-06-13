@@ -45,11 +45,11 @@ module.exports = {
         const token = jwt.sign({ userId: login }, SECRET, { expiresIn: 2592000 });
         const objAuth = {
             user:{
-              id:data.id,
-              name:data.nome,
-              email:data.email,
-              status:data.status,
-              permission:data.permissao
+              id:data.data.id,
+              name:data.data.nome,
+              email:data.data.email,
+              status:data.data.status,
+              permission:data.data.permissao
             }
           ,
           auth: true,
