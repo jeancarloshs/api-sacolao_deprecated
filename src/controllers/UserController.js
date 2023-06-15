@@ -14,7 +14,6 @@ module.exports = {
   async user(req, res) {
     const response = { ...responseModel };
     const user = req.userId;
-    console.log('JWT.DECODE',req.userId)
     const [, data] = await connection.query(`
     SELECT id_usuario as id, ds_email as email, ds_usuario as nome, ds_status as status, ds_permissao as permissao
      FROM tb_usuario WHERE id_usuario = '${user}'

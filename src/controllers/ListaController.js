@@ -1,5 +1,6 @@
 const connection = require("../database/connection");
 const constants = require("../constants/constants");
+const jwt = require("jsonwebtoken");
 const responseModel = {
   success: false,
   found: 0,
@@ -32,7 +33,7 @@ module.exports = {
 
   async getUserLists(req, res) {
     const response = { ...responseModel };
-    let idUser = req.params.id;
+    let idUser = req.userId;
     response.data = [];
     let query = "";
 

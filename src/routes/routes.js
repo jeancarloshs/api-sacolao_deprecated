@@ -24,7 +24,7 @@ router.get('/products/description/:description', verifyJWT, ProdutoController.pr
 router.get('/products/all', verifyJWT, ProdutoController.allProducts);
 
 //LISTA
-router.get('/lists/getuserlists/:id', verifyJWT, ListaController.getUserLists)
+router.get('/lists/getuserlists', verifyJWT, ListaController.getUserLists)
 router.get('/lists/getlistproducts/:id', verifyJWT, ListaController.getListProducts)
 router.post('/lists/create', verifyJWT, ListaController.createList)
 // router.post('/lists/addproducttolist', verifyJWT, ListaController.addProducts)
