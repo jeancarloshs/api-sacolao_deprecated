@@ -13,6 +13,36 @@ const responseModel = {
 module.exports = {
   async user(req, res) {
     const response = { ...responseModel };
+    const user = req.userId;
+    const [, data] = await connection.query(`
+    SELECT id_usuario as id, ds_email as email, ds_usuario as nome, ds_status as status, ds_permissao as permissao
+     FROM tb_usuario WHERE id_usuario = '${user}'
+        `);
+    response.success = data.length > 0;
+    if (response.success) {
+      const objAuth = {
+        user: {
+          id: data[0].id,
+          name: data[0].nome,
+          email: data[0].email,
+          status: data[0].status,
+          permission: data[0].permissao,
+        },
+      };
+      return res.json(objAuth);
+    } else {
+      user !== undefined
+        ? (response.error = constants["404"].userNotFound)
+        : "";
+      user === undefined
+        ? (response.error = constants["422"].userNotDefined)
+        : "";
+      return res.json(response);
+    }
+  },
+
+  async userFind(req, res) {
+    const response = { ...responseModel };
     const { user } = req.body;
     const [, data] = await connection.query(`
     SELECT id_usuario as id, ds_email as email, ds_usuario as nome, ds_status as status, ds_permissao as permissao

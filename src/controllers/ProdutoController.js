@@ -7,10 +7,11 @@ const responseModel = {
   data: [],
   error: "",
 };
+
 module.exports = {
-  async produtosCOD(req, res) {
+  async productsCOD(req, res) {
     const response = { ...responseModel };
-    const codigo = req.params.codigo;
+    const codigo = req.params.code;
     const [, data] = await connection.query(`
             SELECT id_produto as id, ds_produto as produto, cd_barras as codigo, url_imagem as imagem FROM tb_produtos where cd_barras = ${codigo}
         `);
@@ -24,9 +25,10 @@ module.exports = {
 
     return res.json(response);
   },
-  async produtosDS(req, res) {
+
+  async productsDS(req, res) {
     const response = { ...responseModel };
-    const descricao = req.param("descricao");
+    const descricao = req.param("description");
     const [, data] = await connection.query(`
             SELECT id_produto as id, ds_produto as produto, cd_barras as codigo, url_imagem as imagem FROM tb_produtos where ds_produto like '%${descricao}%'
         `);
@@ -40,7 +42,8 @@ module.exports = {
 
     return res.json(response);
   },
-  async todos(req, res) {
+
+  async allProducts(req, res) {
     const response = { ...responseModel };
     const [, data] = await connection.query(`
             SELECT COUNT(*) as Prod_Total FROM tb_produtos
@@ -55,7 +58,8 @@ module.exports = {
 
     return res.json(response);
   },
-  async removerDuplicado(req, res) {
+
+  async deleteDuplicate(req, res) {
     const response = { ...responseModel };
     response.data = [];
     const [, data] = await connection.query(`
