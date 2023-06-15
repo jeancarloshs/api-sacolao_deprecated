@@ -93,7 +93,7 @@ module.exports = {
             }
           ,
           auth: true,
-          token:token
+          token: token
         }
         return res.json(objAuth);
       } else {

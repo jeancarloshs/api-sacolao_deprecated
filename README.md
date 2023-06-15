@@ -8,7 +8,7 @@ Api voltada para a construção do aplicativo Meu Sacolão.
 Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de ambiente no seu .env
 
 - Crie um arquivo chamado .env
-  - Preencha as variáveis do .env com base no arquivo .env-example
+  - Preencha as variáveis do .env com base no arquivo .env.example
 
     `PORT` = PORTA DE EXECUÇÃO DO SERVIDOR LOCAL
 
@@ -25,6 +25,8 @@ Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de
     `DATABASE` = BD
     
     `DIALECT` = mysql
+    
+    `SECRET` = SECRET PARA O Json Web Token
 
 ## Rodando localmente
 
