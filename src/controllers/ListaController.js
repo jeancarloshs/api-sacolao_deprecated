@@ -8,7 +8,7 @@ const responseModel = {
 };
 
 module.exports = {
-  async criaLista(req, res) {
+  async createList(req, res) {
     const response = { ...responseModel };
     response.data = [];
     const { id_user, ds_lista } = req.body;
