@@ -25,7 +25,7 @@ module.exports = {
       response.data.push(`Lista cadastrada com sucesso`);
       response.found = data.length;
     } else {
-      response.error = constants['422'].requiredfields;
+      response.error = constants["422"].requiredfields;
     }
 
     return res.json(response);
@@ -37,11 +37,11 @@ module.exports = {
     response.data = [];
     let query = "";
 
-    query = `SELECT id_usuario FROM tb_usuario WHERE id_usuario = ${idUser}`
-    const [, outData] = await connection.query(query)
+    query = `SELECT id_usuario FROM tb_usuario WHERE id_usuario = ${idUser}`;
+    const [, outData] = await connection.query(query);
 
-    if(outData.length < 1) {
-      response.error = constants['404'].userNotFound;
+    if (outData.length < 1) {
+      response.error = constants["404"].userNotFound;
     } else {
       try {
         const [, data] = await connection.query(`
@@ -54,12 +54,12 @@ module.exports = {
           response.data = data;
         } else {
           response.error.push(constants["404"].noListsFound);
-        } 
+        }
       } catch (error) {
         console.log(error);
       }
     }
-  
+
     return res.json(response);
   },
 
@@ -75,10 +75,14 @@ module.exports = {
       response.success = data.length > 0;
       if (response.success) {
         const query = `
-        SELECT tb_produtos.ds_produto, tb_produtos.cd_barras, tb_produtos.url_imagem, tb_produtos_by_list.id_pblist, tb_produtos_by_list.id_valor, tb_produtos_by_list.id_qtd
+        SELECT
+        tb_produtos.id_produto, tb_produtos.ds_produto,
+        tb_produtos.cd_barras, tb_produtos.url_imagem,
+        tb_produtos_by_list.id_pblist, tb_produtos_by_list.id_lista,
+        tb_produtos_by_list.id_valor, tb_produtos_by_list.id_qtd
         FROM tb_produtos JOIN tb_produtos_by_list
-        WHERE tb_produtos.id_produto = tb_produtos_by_list.id_produto
-        `
+        WHERE tb_produtos.id_produto = tb_produtos_by_list.id_produto AND id_lista = ${idList}      
+        `;
         const [, data] = await connection.query(query);
         response.success = true;
         response.found = data.length;
