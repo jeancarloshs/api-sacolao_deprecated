@@ -97,11 +97,39 @@ module.exports = {
     return res.json(response);
   },
 
-  // async addProducts(req, res) {
-  //   const response = { ...responseModel }
-  //   response.data = []
-  //   response.error = []
-  //   response.found = []
-  //   const { } = req.body;
-  // }
+  async addProducts(req, res) {
+    const response = { ...responseModel };
+    let { id_lista, id_produto, id_valor, id_qtd } = req.body;
+    response.data = [];
+    let query = "";
+
+    query = `
+    INSERT INTO tb_produtos_by_list (id_lista, id_produto, id_valor, id_qtd) 
+    VALUES (${id_lista}, ${id_produto}, ${id_valor}, ${id_qtd});
+    `;
+    
+    
+    try {
+      if(id_qtd > 0){
+        const data = await connection.query(query);
+        console.log('DATA:', data);
+        response.success = !!data;
+        if (response.success) {
+          // response.success = true;
+          response.found = id_qtd;
+          response.data = "Produto Inserido com Sucesso";
+        } else {
+          response.error = "Ocorreu algum erro!";
+        }
+      }else {
+        response.error = "A quantia minima precisa ser 1";
+      }
+    } catch (error) {
+      console.log(error);
+      response.error = "Ocorreu um erro ao inserir o produto.";
+    }
+
+
+    return res.json(response);
+  },
 };
