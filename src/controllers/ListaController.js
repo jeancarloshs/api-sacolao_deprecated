@@ -22,7 +22,7 @@ module.exports = {
     if (id_user) {
       const [, data] = await connection.query(query);
       response.success = data.length;
-      response.data.push(`Lista cadastrada com sucesso`);
+      response.data = constants["201"].listCreated;
       response.found = data.length;
     } else {
       response.error = constants["422"].requiredfields;

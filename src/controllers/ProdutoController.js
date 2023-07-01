@@ -76,7 +76,7 @@ module.exports = {
                         HAVING id_produto > MIN(min_id)
                       )`;
         const [, data] = await connection.query(query);
-        response.data = constants['200'].deletedDuplicates;
+        response.data = constants['204'].deletedDuplicates;
       } catch (err) {
         console.log(err);
       }
