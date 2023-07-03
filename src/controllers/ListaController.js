@@ -12,20 +12,22 @@ module.exports = {
   async createList(req, res) {
     const response = { ...responseModel };
     response.data = [];
-    const { id_user, ds_lista } = req.body;
+    const { ds_lista } = req.body;
+    const idUser = req.userId;
     let query = "";
 
     query = ds_lista
-      ? `INSERT INTO tb_listas (id_usuario, ds_lista) VALUES (${id_user}, '${ds_lista}')`
-      : `INSERT INTO tb_listas (id_usuario) VALUES (${id_user})`;
+      ? `INSERT INTO tb_listas (id_usuario, ds_lista) VALUES (${idUser}, '${ds_lista}')`
+      : `INSERT INTO tb_listas (id_usuario) VALUES (${idUser})`;
 
-    if (id_user) {
+    try {
       const [, data] = await connection.query(query);
       response.success = data.length;
       response.data = constants["201"].listCreated;
       response.found = data.length;
-    } else {
+    } catch(e) {
       response.error = constants["422"].requiredfields;
+      console.log(e)
     }
 
     return res.json(response);
@@ -33,7 +35,7 @@ module.exports = {
 
   async getUserLists(req, res) {
     const response = { ...responseModel };
-    let idUser = req.userId;
+    const idUser = req.userId;
     response.data = [];
     let query = "";
 
