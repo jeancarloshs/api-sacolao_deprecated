@@ -1,11 +1,17 @@
 module.exports = {
   200: {
     userError: "Usuário não pode ser criado",
-    deletedDuplicates: "Duplicados foram deletados!",
   },
   201: {
     status: 201,
     userSuccess: "Usuário foi criado com sucesso",
+    listCreated: "Lista cadastrada com sucesso",
+    insertProducts: "Inserido com sucesso!"
+  },
+  204: {
+    status: 204,
+    deletedDuplicates: "Duplicados foram deletados!",
+    listDeleted: "Lista deletada com sucesso"
   },
   401: {
     status: 401,

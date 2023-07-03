@@ -27,7 +27,7 @@ router.get('/products/all', verifyJWT, ProdutoController.allProducts);
 router.get('/lists/getuserlists', verifyJWT, ListaController.getUserLists)
 router.get('/lists/getlistproducts/:id', verifyJWT, ListaController.getListProducts)
 router.post('/lists/create', verifyJWT, ListaController.createList)
-// router.post('/lists/addproducttolist', verifyJWT, ListaController.addProducts)
+router.post('/lists/addproducttolist/', verifyJWT, ListaController.addProducts)
 
 //MIGRATION
 router.post('/manage/migrate', verifyJWT, MigrationController.migrar)

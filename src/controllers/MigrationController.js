@@ -1,6 +1,7 @@
 const connection = require("../database/connection");
 const md5 = require("md5");
 const { json } = require("body-parser");
+const constants = require("../constants/constants");
 const responseModel = {
   success: false,
   found: [],
@@ -76,7 +77,7 @@ module.exports = {
     
     queries.forEach((query) => {
       inserir(query);
-      response.data.push("Inserido com sucesso!")
+      response.data = constants["201"].insertProducts
     });
     response.found = queries.length
     return res.json(response);
