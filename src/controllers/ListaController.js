@@ -36,7 +36,7 @@ module.exports = {
   async deleteList(req, res) {
     const response = { ...responseModel };
     response.data = [];
-    const { id_lista } = req.param("idList");
+    const  id_lista = req.param("idList");
     const idUser = req.userId;
     let query = "";
 
