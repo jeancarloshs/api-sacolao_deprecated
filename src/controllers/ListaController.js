@@ -52,7 +52,8 @@ module.exports = {
       response.data = constants["204"].listDeleted;
       response.found = data.length;
     } catch(e) {
-      response.error = constants["404"].noListsFound;
+      response.error = query
+      // response.error = constants["404"].noListsFound;
       console.log(e)
     }
 
