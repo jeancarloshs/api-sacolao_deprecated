@@ -38,18 +38,18 @@ module.exports = {
     response.data = [];
     const  id_lista = req.param("idList");
     const idUser = req.userId;
-    let query = "";
-
-    query = `SET FOREIGN_KEY_CHECKS = 0;DELETE FROM tb_listas WHERE id_lista = ${id_lista} AND id_usuario = ${idUser};SET FOREIGN_KEY_CHECKS = 1;`
-
+    let query1 = "SET FOREIGN_KEY_CHECKS = 0";
+    connection.query(query1)
+    const query2 = `DELETE FROM tb_listas WHERE id_lista = ${id_lista} AND id_usuario = ${idUser}`
     try {
-      const [, data] = await connection.query(query);
+      const [, data] = await connection.query(query2);
       response.success = data.length;
       response.data = constants["204"].listDeleted;
       response.found = data.length;
+      const query3 = "SET FOREIGN_KEY_CHECKS = 1"
+      connection.query(query3)
     } catch(e) {
-      response.error = query
-      // response.error = constants["404"].noListsFound;
+      response.error = constants["404"].noListsFound;
       console.log(e)
     }
 
