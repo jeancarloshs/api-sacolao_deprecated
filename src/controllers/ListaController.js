@@ -47,7 +47,7 @@ module.exports = {
     } else {
       try {
         const [, data] = await connection.query(`
-          SELECT * FROM tb_listas WHERE id_usuario = ${idUser}
+          SELECT * FROM tb_listas WHERE id_usuario = ${idUser} ORDER BY id_lista DESC
         `);
         response.success = data.length > 0;
         if (response.success) {
