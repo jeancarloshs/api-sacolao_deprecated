@@ -41,11 +41,9 @@ module.exports = {
     let query = "";
 
     query = `
-      START TRANSACTION;
       SET FOREIGN_KEY_CHECKS = 0;
       DELETE FROM tb_listas WHERE id_lista = ${id_lista} AND id_usuario = ${idUser};
       SET FOREIGN_KEY_CHECKS = 1;
-      COMMIT;
       `
 
     try {
