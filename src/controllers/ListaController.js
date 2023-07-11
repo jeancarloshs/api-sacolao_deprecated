@@ -33,6 +33,34 @@ module.exports = {
     return res.json(response);
   },
 
+  async deleteList(req, res) {
+    const response = { ...responseModel };
+    response.data = [];
+    const { id_lista } = req.params.idList;
+    const idUser = req.userId;
+    let query = "";
+
+    query = `
+      START TRANSACTION;
+      SET FOREIGN_KEY_CHECKS = 0;
+      DELETE FROM tb_listas WHERE id_lista = ${id_lista} AND id_usuario = ${idUser};
+      SET FOREIGN_KEY_CHECKS = 1;
+      COMMIT;
+      `
+
+    try {
+      const [, data] = await connection.query(query);
+      response.success = data.length;
+      response.data = constants["204"].listDeleted;
+      response.found = data.length;
+    } catch(e) {
+      response.error = constants["404"].noListsFound;
+      console.log(e)
+    }
+
+    return res.json(response);
+  },
+
   async getUserLists(req, res) {
     const response = { ...responseModel };
     const idUser = req.userId;
