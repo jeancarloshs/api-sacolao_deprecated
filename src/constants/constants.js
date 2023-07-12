@@ -18,6 +18,10 @@ module.exports = {
     tokenItsNotValid: "Token inválido",
     userLoginError: "Login ou senha incorretos",
   },
+  402: {
+    status: 402,
+    paymentRequired: "Pagamento requisitado"
+  },
   403: {
     status: 403,
     tokenNotFound: "Token de autenticação não fornecido.",
