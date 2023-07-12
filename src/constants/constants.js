@@ -17,6 +17,7 @@ module.exports = {
     status: 401,
     tokenItsNotValid: "Token inválido",
     userLoginError: "Login ou senha incorretos",
+    inactiveUser: "Esta conta foi suspensa"
   },
   402: {
     status: 402,
