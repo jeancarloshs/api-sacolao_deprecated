@@ -51,21 +51,24 @@ module.exports = {
     response.success = data.length > 0;
     if (response.success) {
       const objAuth = {
-        user:{
-          id:data[0].id,
-          name:data[0].nome,
-          email:data[0].email,
-          status:data[0].status,
-          permission:data[0].permissao
-        }
-      }
+        user: {
+          id: data[0].id,
+          name: data[0].nome,
+          email: data[0].email,
+          status: data[0].status,
+          permission: data[0].permissao,
+        },
+      };
       return res.json(objAuth);
     } else {
-      user !== undefined ? response.error = constants['404'].userNotFound : "";
-      user === undefined ? response.error = constants['422'].userNotDefined : "";
+      user !== undefined
+        ? (response.error = constants["404"].userNotFound)
+        : "";
+      user === undefined
+        ? (response.error = constants["422"].userNotDefined)
+        : "";
       return res.json(response);
     }
-
   },
 
   async login(req, res) {
@@ -80,21 +83,29 @@ module.exports = {
       WHERE ds_email = "${login}"
       AND ds_senha = "${passwordEncrypted}"
   `);
+
       response.success = data.length > 0;
       if (response.success) {
-        const token = jwt.sign({ userId: data[0].id }, SECRET, { expiresIn: 2592000 });
-        const objAuth = {
-            user:{
-              id:data[0].id,
-              name:data[0].nome,
-              email:data[0].email,
-              status:data[0].status,
-              permission:data[0].permissao
-            }
-          ,
-          auth: true,
-          token: token
+        if (data[0].status !== 1) {
+          res.status(401);
+          response.error = constants["401"].inactiveUser;
+          return res.json(response);
         }
+
+        const token = jwt.sign({ userId: data[0].id }, SECRET, {
+          expiresIn: 2592000,
+        });
+        const objAuth = {
+          user: {
+            id: data[0].id,
+            name: data[0].nome,
+            email: data[0].email,
+            status: data[0].status,
+            permission: data[0].permissao,
+          },
+          auth: true,
+          token: token,
+        };
         return res.json(objAuth);
       } else {
         // login !== undefined && password !== undefined
@@ -104,10 +115,10 @@ module.exports = {
         //   ? response.error.push("login: e password: é obrigatório")
         //   : "";
         res.status(401);
-        response.error = constants['401'].userLoginError;
+        response.error = constants["401"].userLoginError;
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
 
     // setTimeout(() => {
@@ -126,7 +137,7 @@ module.exports = {
     response.success = data.length > 0;
 
     if (response.success) {
-      response.error = constants['409'].userAlreadyExist;
+      response.error = constants["409"].userAlreadyExist;
     } else {
       try {
         if (ds_usuario && id_uf && ds_email && ds_senha) {
@@ -136,9 +147,9 @@ module.exports = {
             `);
           // response.success = data.length > 0;
           response.success = true;
-          response.data = constants['201'].userSuccess;
+          response.data = constants["201"].userSuccess;
         } else {
-          response.error = constants['422'].requiredfields;
+          response.error = constants["422"].requiredfields;
         }
       } catch (error) {
         console.log(error);
